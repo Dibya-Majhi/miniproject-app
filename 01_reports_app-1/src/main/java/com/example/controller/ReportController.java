@@ -2,9 +2,12 @@ package com.example.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,26 @@ public class ReportController {
 	
 	@Autowired
 private ReportService service;
+	
+	
+	@GetMapping("/pdf")
+	public void pdfEcport(HttpServletResponse respones) throws Exception{
+		//pass this response to the sevceimpl on pdflExport methid
+		
+		respones.setContentType("application/pdf");
+		respones.addHeader("Content-Disposition", "attachment;filename=plans.pdf");
+		service.exportPdf(respones);
+	}
+	
+	@GetMapping("/excel")
+	public void excelEcport(HttpServletResponse respones) throws Exception{
+		//pass this response to the sevceimpl on excelExport methid
+		
+		respones.setContentType("application/octet-stream");
+		respones.addHeader("Content-Disposition", "attachment;filename=plans.xls");
+		service.exportExcel(respones);
+	}
+	
 	
 	
 	@PostMapping("/search")
